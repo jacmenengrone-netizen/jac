@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico da Rotina — Juntando as Peças</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3EE;
+    --warm-white: #FDFAF6;
+    --ink: #1C1814;
+    --ink-light: #4A4540;
+    --terracotta: #C2704A;
+    --terracotta-light: #E8957A;
+    --sage: #7A8C7E;
+    --sage-light: #B8C4BA;
+    --gold: #C9A96E;
+    --gold-light: #E8D5B0;
+    --border: #E2DAD0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 20px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(247,243,238,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--ink-light);
+  }
+  .nav-tag {
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--terracotta);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+  .hero-left {
+    padding: 80px 64px 80px 80px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--terracotta);
+    margin-bottom: 32px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 32px; height: 1px; background: var(--terracotta);
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 5vw, 72px);
+    font-weight: 500; line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+    color: var(--ink);
+  }
+  .hero-title em {
+    font-style: italic; color: var(--terracotta);
+  }
+  .hero-lead {
+    font-size: 16px; line-height: 1.8;
+    color: var(--ink-light);
+    max-width: 460px;
+    margin-bottom: 48px;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 18px 36px;
+    font-size: 13px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    width: fit-content;
+  }
+  .hero-cta:hover { background: var(--terracotta); }
+  .hero-cta-arrow { font-size: 18px; transition: transform 0.3s; }
+  .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
+
+  .hero-right {
+    padding: 80px 80px 80px 64px;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 0;
+  }
+  .hero-stat {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-stat:first-child { border-top: 1px solid var(--border); }
+  .hero-stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px; font-weight: 400;
+    color: var(--terracotta); line-height: 1;
+    margin-bottom: 8px;
+  }
+  .hero-stat-label {
+    font-size: 13px; color: var(--ink-light);
+    letter-spacing: 0.05em;
+  }
+
+  /* SECTION BASE */
+  section { padding: 100px 80px; }
+  .section-eyebrow {
+    font-size: 11px; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--sage);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::before {
+    content: ''; width: 24px; height: 1px; background: var(--sage);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 3.5vw, 52px);
+    font-weight: 500; line-height: 1.1;
+    margin-bottom: 48px;
+  }
+
+  /* PARA QUEM É */
+  .for-who { background: var(--warm-white); }
+  .for-who-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border: 1px solid var(--border);
+    margin-top: 48px;
+  }
+  .for-who-item {
+    padding: 40px 48px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .for-who-item:nth-child(even) { border-right: none; }
+  .for-who-item:nth-last-child(-n+2) { border-bottom: none; }
+  .for-who-marker {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+  }
+  .for-who-text {
+    font-size: 15px; line-height: 1.7; color: var(--ink);
+  }
+
+  /* PROBLEMA */
+  .problema {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .problema .section-eyebrow { color: var(--terracotta-light); }
+  .problema .section-eyebrow::before { background: var(--terracotta-light); }
+  .problema .section-title { color: var(--cream); }
+  .problema-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 2.5vw, 36px);
+    font-style: italic; font-weight: 400;
+    line-height: 1.4;
+    color: var(--gold-light);
+    border-left: 2px solid var(--terracotta);
+    padding-left: 40px;
+    margin-bottom: 64px;
+  }
+  .problema-list {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(255,255,255,0.08);
+    margin-top: 48px;
+  }
+  .problema-item {
+    background: var(--ink);
+    padding: 40px 36px;
+    position: relative;
+  }
+  .problema-item::before {
+    content: attr(data-num);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; font-weight: 400;
+    color: rgba(194,112,74,0.2);
+    position: absolute; top: 16px; right: 24px;
+    line-height: 1;
+  }
+  .problema-item-title {
+    font-size: 13px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--terracotta-light);
+    margin-bottom: 12px;
+  }
+  .problema-item-text {
+    font-size: 14px; line-height: 1.7;
+    color: rgba(247,243,238,0.75);
+  }
+
+  /* ESTRUTURA DA SESSÃO */
+  .sessao { background: var(--cream); }
+  .sessao-timeline {
+    position: relative;
+    margin-top: 64px;
+  }
+  .sessao-timeline::before {
+    content: ''; position: absolute;
+    left: 28px; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .sessao-fase {
+    display: flex; gap: 48px;
+    padding-left: 80px;
+    margin-bottom: 56px;
+    position: relative;
+  }
+  .sessao-fase::before {
+    content: attr(data-fase);
+    position: absolute; left: 0;
+    width: 56px; height: 56px;
+    background: var(--cream);
+    border: 1px solid var(--terracotta);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; color: var(--terracotta);
+  }
+  .sessao-fase-content { flex: 1; }
+  .sessao-fase-header {
+    display: flex; align-items: baseline; gap: 16px;
+    margin-bottom: 16px;
+  }
+  .sessao-fase-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 500;
+    color: var(--ink);
+  }
+  .sessao-fase-time {
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--sage);
+  }
+  .sessao-fase-desc {
+    font-size: 14px; color: var(--ink-light); line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .sessao-fase-perguntas {
+    list-style: none;
+  }
+  .sessao-fase-perguntas li {
+    font-size: 13px; color: var(--ink-light);
+    padding: 8px 0 8px 20px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .sessao-fase-perguntas li::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--terracotta); font-size: 12px;
+  }
+
+  /* ENTREGA */
+  .entrega { background: var(--sage); color: var(--cream); }
+  .entrega .section-eyebrow { color: rgba(247,243,238,0.6); }
+  .entrega .section-eyebrow::before { background: rgba(247,243,238,0.4); }
+  .entrega .section-title { color: var(--cream); }
+  .entrega-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-top: 48px;
+  }
+  .entrega-card {
+    background: rgba(255,255,255,0.12);
+    padding: 36px 32px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: background 0.3s;
+  }
+  .entrega-card:hover { background: rgba(255,255,255,0.18); }
+  .entrega-card-icon {
+    font-size: 28px; margin-bottom: 20px;
+  }
+  .entrega-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500;
+    color: var(--cream); margin-bottom: 12px;
+  }
+  .entrega-card-text {
+    font-size: 13px; line-height: 1.7;
+    color: rgba(247,243,238,0.8);
+  }
+
+  /* RELATÓRIO WHATSAPP */
+  .relatorio { background: var(--warm-white); }
+  .relatorio-preview {
+    background: #E5DDD5;
+    border-radius: 8px;
+    padding: 32px;
+    max-width: 520px;
+    margin: 48px auto 0;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  }
+  .wa-header {
+    background: #075E54;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 6px 6px 0 0;
+    margin: -32px -32px 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .wa-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--terracotta);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-weight: 600; color: white;
+  }
+  .wa-name { font-size: 14px; font-weight: 500; }
+  .wa-sub { font-size: 11px; opacity: 0.7; }
+  .wa-bubble {
+    background: white;
+    border-radius: 0 8px 8px 8px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+    max-width: 90%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 13px; line-height: 1.6;
+    color: #303030;
+  }
+  .wa-bubble-title {
+    font-weight: 600; color: #075E54;
+    margin-bottom: 8px; font-size: 14px;
+  }
+  .wa-bubble ul {
+    list-style: none; padding: 0;
+  }
+  .wa-bubble ul li {
+    padding: 3px 0;
+  }
+  .wa-bubble ul li::before {
+    content: '•'; color: var(--terracotta);
+    margin-right: 8px; font-weight: bold;
+  }
+  .wa-time {
+    font-size: 10px; color: #999;
+    text-align: right; margin-top: 4px;
+  }
+  .relatorio-estrutura {
+    margin-top: 48px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .relatorio-bloco {
+    padding: 28px 32px;
+    border: 1px solid var(--border);
+    background: white;
+  }
+  .relatorio-bloco-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; letter-spacing: 0.1em;
+    color: var(--terracotta); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .relatorio-bloco-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .relatorio-bloco-text {
+    font-size: 13px; color: var(--ink-light); line-height: 1.6;
+  }
+
+  /* COPY DE OFERTA */
+  .oferta {
+    background: var(--ink); color: var(--cream);
+    padding: 100px 80px;
+  }
+  .oferta .section-eyebrow { color: var(--gold); }
+  .oferta .section-eyebrow::before { background: var(--gold); }
+  .oferta .section-title { color: var(--cream); margin-bottom: 0; }
+  .oferta-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-style: italic;
+    color: var(--gold-light); margin-bottom: 64px; margin-top: 8px;
+  }
+  .oferta-copy {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: start;
+  }
+  .oferta-body p {
+    font-size: 15px; line-height: 1.9;
+    color: rgba(247,243,238,0.82);
+    margin-bottom: 20px;
+  }
+  .oferta-body strong {
+    color: var(--cream); font-weight: 500;
+  }
+  .oferta-box {
+    border: 1px solid rgba(201,169,110,0.3);
+    padding: 40px;
+    position: sticky; top: 100px;
+  }
+  .oferta-box-label {
+    font-size: 10px; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .oferta-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; font-weight: 400;
+    color: var(--cream); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .oferta-price-sub {
+    font-size: 12px; color: rgba(247,243,238,0.5);
+    margin-bottom: 32px; letter-spacing: 0.08em;
+  }
+  .oferta-includes {
+    list-style: none; margin-bottom: 32px;
+  }
+  .oferta-includes li {
+    font-size: 13px; padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: rgba(247,243,238,0.8);
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .oferta-includes li::before {
+    content: '✦'; color: var(--gold); font-size: 10px; margin-top: 3px;
+    flex-shrink: 0;
+  }
+  .oferta-cta {
+    display: block; width: 100%;
+    background: var(--terracotta);
+    color: white; text-align: center;
+    padding: 18px;
+    font-size: 12px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s;
+    border: none; cursor: pointer;
+  }
+  .oferta-cta:hover { background: var(--terracotta-light); }
+  .oferta-urgency {
+    font-size: 11px; text-align: center;
+    color: rgba(247,243,238,0.4); margin-top: 14px;
+    letter-spacing: 0.06em;
+  }
+
+  /* LEVANTADA DE MÃO */
+  .levantada { background: var(--cream); }
+  .levantada-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-top: 48px;
+  }
+  .levantada-card {
+    border: 1px solid var(--border);
+    background: white; padding: 36px 32px;
+    position: relative; overflow: hidden;
+  }
+  .levantada-card::after {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: var(--terracotta);
+  }
+  .levantada-card-tag {
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--sage);
+    margin-bottom: 20px;
+  }
+  .levantada-card-gancho {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-weight: 500;
+    line-height: 1.3; color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .levantada-card-bullets {
+    list-style: none; margin-bottom: 20px;
+  }
+  .levantada-card-bullets li {
+    font-size: 13px; color: var(--ink-light);
+    padding: 6px 0 6px 16px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .levantada-card-bullets li::before {
+    content: '•'; position: absolute; left: 0;
+    color: var(--terracotta);
+  }
+  .levantada-card-semente {
+    font-size: 13px; font-style: italic;
+    color: var(--ink-light); margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .levantada-card-cta {
+    font-size: 13px; font-weight: 500;
+    color: var(--terracotta);
+    background: rgba(194,112,74,0.08);
+    padding: 10px 16px;
+    display: block;
+  }
+
+  /* FOLLOW UP */
+  .followup {
+    background: var(--gold-light);
+    padding: 64px 80px;
+    border-top: 1px solid var(--gold);
+  }
+  .followup-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .followup-msg {
+    background: white;
+    border-left: 3px solid var(--terracotta);
+    padding: 28px 32px;
+    font-size: 14px; line-height: 1.8;
+    color: var(--ink); max-width: 680px;
+    white-space: pre-line;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); color: rgba(247,243,238,0.4);
+    padding: 40px 80px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; letter-spacing: 0.08em;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; color: var(--cream);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate { animation: fadeUp 0.7s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.2s; opacity: 0; }
+  .delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 60px 32px; border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-right { padding: 48px 32px; }
+    section { padding: 72px 32px; }
+    .for-who-grid, .problema-list, .entrega-grid, .levantada-cards,
+    .oferta-copy, .relatorio-estrutura { grid-template-columns: 1fr; }
+    .oferta { padding: 72px 32px; }
+    .followup { padding: 48px 32px; }
+    footer { flex-direction: column; gap: 16px; padding: 32px; }
+    .sessao-fase { padding-left: 64px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Juntando as Peças</span>
+  <span class="nav-tag">Supervisão Especializada</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding: 0; padding-top: 80px;">
+  <div class="hero-left">
+    <div class="hero-eyebrow animate delay-1">Produto Abre-Carteira</div>
+    <h1 class="hero-title animate delay-2">
+      Diagnóstico<br>da <em>Rotina</em>
+    </h1>
+    <p class="hero-lead animate delay-3">
+      Uma sessão de 90 minutos para mapear exatamente o que está sabotando a rotina do seu filho — e sair com um plano claro de onde intervir primeiro.
+    </p>
+    <a href="#oferta" class="hero-cta animate delay-3">
+      Ver detalhes da oferta
+      <span class="hero-cta-arrow">→</span>
+    </a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat">
+      <div class="hero-stat-number">90'</div>
+      <div class="hero-stat-label">Uma sessão. Resultado imediato.</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-number">3</div>
+      <div class="hero-stat-label">Prioridades de intervenção entregues por escrito</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-number">1</div>
+      <div class="hero-stat-label">Plano de primeiros passos — para começar esta semana</div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="for-who">
+  <div class="section-eyebrow">Para quem é</div>
+  <h2 class="section-title">Você reconhece essa situação?</h2>
+  <div class="for-who-grid">
+    <div class="for-who-item">
+      <div class="for-who-marker">✓ Sim, esse sou eu</div>
+      <p class="for-who-text">Você já tem diagnóstico, já paga por terapias, mas não tem um plano prático de como aplicar isso em casa.</p>
+    </div>
+    <div class="for-who-item">
+      <div class="for-who-marker">✓ Sim, esse sou eu</div>
+      <p class="for-who-text">A rotina existe no papel, mas na prática vira caos na hora das transições, refeições ou hora de dormir.</p>
+    </div>
+    <div class="for-who-item">
+      <div class="for-who-marker">✓ Sim, esse sou eu</div>
+      <p class="for-who-text">Você reage no impulso quando ele entra em crise — e só depois percebe que poderia ter evitado.</p>
+    </div>
+    <div class="for-who-item">
+      <div class="for-who-marker">✓ Sim, esse sou eu</div>
+      <p class="for-who-text">Você sente que está perdendo janelas de desenvolvimento enquanto ainda tenta entender por onde começar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="problema">
+  <div class="section-eyebrow">O real problema</div>
+  <h2 class="section-title">O caos não é falta de esforço.<br>É falta de mapa.</h2>
+  <div class="problema-quote">
+    "Ninguém nunca lhe entregou um plano prático de como ser a mãe protagonista do desenvolvimento do próprio filho."
+  </div>
+  <div class="problema-list">
+    <div class="problema-item" data-num="01">
+      <div class="problema-item-title">Sem rotina estruturada</div>
+      <p class="problema-item-text">A rotina genérica da internet não funciona para o seu filho porque ele tem um perfil sensorial, cognitivo e comportamental único.</p>
+    </div>
+    <div class="problema-item" data-num="02">
+      <div class="problema-item-title">Sem leitura do comportamento</div>
+      <p class="problema-item-text">Você não sabe o que está antecedendo a crise — então não consegue preveni-la. Fica sempre no modo apagar incêndio.</p>
+    </div>
+    <div class="problema-item" data-num="03">
+      <div class="problema-item-title">Sem prioridade clara</div>
+      <p class="problema-item-text">São dez comportamentos para trabalhar ao mesmo tempo. Sem saber qual intervir primeiro, você tenta tudo e não avança em nada.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ESTRUTURA DA SESSÃO -->
+<section class="sessao">
+  <div class="section-eyebrow">Como funciona</div>
+  <h2 class="section-title">Roteiro da sessão de 90 minutos</h2>
+  <div class="sessao-timeline">
+
+    <div class="sessao-fase" data-fase="I">
+      <div class="sessao-fase-content">
+        <div class="sessao-fase-header">
+          <span class="sessao-fase-title">Abertura e Mapeamento de Contexto</span>
+          <span class="sessao-fase-time">15 min</span>
+        </div>
+        <p class="sessao-fase-desc">Entender o cenário atual da família antes de olhar para o filho. Escola, terapias, suporte em casa, rotina de trabalho da mãe.</p>
+        <ul class="sessao-fase-perguntas">
+          <li>Quantas terapias o seu filho faz por semana e quais?</li>
+          <li>Quem está em casa no dia a dia — você, pai, avó, cuidador?</li>
+          <li>Qual é o seu horário de trabalho e como isso impacta a rotina dele?</li>
+          <li>O que a escola tem feito — e o que você sente que falta?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sessao-fase" data-fase="II">
+      <div class="sessao-fase-content">
+        <div class="sessao-fase-header">
+          <span class="sessao-fase-title">Perfil Comportamental da Criança</span>
+          <span class="sessao-fase-time">20 min</span>
+        </div>
+        <p class="sessao-fase-desc">Identificar os comportamentos mais frequentes e desafiadores, e começar a ler a função por trás de cada um.</p>
+        <ul class="sessao-fase-perguntas">
+          <li>Me conte os 3 comportamentos que mais te desgastam no dia a dia.</li>
+          <li>Quando ele entra em crise, o que geralmente aconteceu antes?</li>
+          <li>Como ele reage a transições — de atividade, de ambiente, de pessoa?</li>
+          <li>O que funciona para acalmá-lo? O que piora?</li>
+          <li>Ele consegue comunicar o que quer ou precisa? De que forma?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sessao-fase" data-fase="III">
+      <div class="sessao-fase-content">
+        <div class="sessao-fase-header">
+          <span class="sessao-fase-title">Análise da Rotina Atual</span>
+          <span class="sessao-fase-time">20 min</span>
+        </div>
+        <p class="sessao-fase-desc">Radiografar a rotina como ela realmente é — não como deveria ser. Identificar os pontos de ruptura sistemáticos.</p>
+        <ul class="sessao-fase-perguntas">
+          <li>Me descreva um dia típico desde que ele acorda até dormir.</li>
+          <li>Quais partes do dia são mais tranquilas? Por quê você acha?</li>
+          <li>Quais partes são invariavelmente caóticas?</li>
+          <li>Você tem alguma estrutura visual de rotina para ele? Funciona?</li>
+          <li>Como é a hora de dormir — qual a sequência e quanto tempo leva?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sessao-fase" data-fase="IV">
+      <div class="sessao-fase-content">
+        <div class="sessao-fase-header">
+          <span class="sessao-fase-title">Análise da Mãe como Variável</span>
+          <span class="sessao-fase-time">15 min</span>
+        </div>
+        <p class="sessao-fase-desc">Entender como o estado da mãe interfere na dinâmica. Isso não é julgamento — é ciência comportamental aplicada ao sistema familiar.</p>
+        <ul class="sessao-fase-perguntas">
+          <li>Como você se sente quando chega em casa do trabalho?</li>
+          <li>Quando você estoura com ele, o que geralmente aconteceu antes?</li>
+          <li>Você tem conseguido tempo para você? Com que frequência?</li>
+          <li>Quem te apoia nessa rotina — ou você está essencialmente sozinha nisso?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sessao-fase" data-fase="V">
+      <div class="sessao-fase-content">
+        <div class="sessao-fase-header">
+          <span class="sessao-fase-title">Diagnóstico e Devolutiva ao Vivo</span>
+          <span class="sessao-fase-time">20 min</span>
+        </div>
+        <p class="sessao-fase-desc">Apresentar o diagnóstico diretamente na sessão: o que está funcionando, o que está sabotando, e as 3 prioridades de intervenção ordenadas por urgência e impacto.</p>
+        <ul class="sessao-fase-perguntas">
+          <li>Nomear os padrões identificados com base em ABA</li>
+          <li>Apresentar hipótese de função dos comportamentos mais críticos</li>
+          <li>Indicar os 3 pontos de intervenção prioritários</li>
+          <li>Explicar por que essa ordem — e o que acontece se inverter</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- O QUE VOCÊ LEVA -->
+<section class="entrega" style="background: var(--sage);">
+  <div class="section-eyebrow" style="color:rgba(247,243,238,0.6)">O que você leva</div>
+  <h2 class="section-title" style="color:var(--cream)">Três entregáveis por escrito<br>direto no seu WhatsApp</h2>
+  <div class="entrega-grid">
+    <div class="entrega-card">
+      <div class="entrega-card-icon">🗺️</div>
+      <div class="entrega-card-title">Diagnóstico da Rotina</div>
+      <p class="entrega-card-text">O que está funcionando, o que está sabotando, e os padrões comportamentais identificados na rotina atual — com linguagem acessível, sem jargão.</p>
+    </div>
+    <div class="entrega-card">
+      <div class="entrega-card-icon">🎯</div>
+      <div class="entrega-card-title">3 Prioridades de Intervenção</div>
+      <p class="entrega-card-text">As três frentes onde intervir primeiro, ordenadas por urgência e impacto. Você não vai tentar fazer tudo ao mesmo tempo.</p>
+    </div>
+    <div class="entrega-card">
+      <div class="entrega-card-icon">📋</div>
+      <div class="entrega-card-title">Plano de Primeiros Passos</div>
+      <p class="entrega-card-text">Ações práticas para começar esta semana — sem precisar de terapeuta presente, sem comprar nada, sem reformar a casa. Só você e ele.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATÓRIO WHATSAPP -->
+<section class="relatorio">
+  <div class="section-eyebrow">Formato de entrega</div>
+  <h2 class="section-title">Relatório enviado por WhatsApp<br>em até 48h após a sessão</h2>
+
+  <div class="relatorio-preview">
+    <div class="wa-header">
+      <div class="wa-avatar">J</div>
+      <div>
+        <div class="wa-name">Jac — Juntando as Peças</div>
+        <div class="wa-sub">Supervisão em desenvolvimento atípico</div>
+      </div>
+    </div>
+    <div class="wa-bubble">
+      <div class="wa-bubble-title">📋 DIAGNÓSTICO DA ROTINA — [Nome da criança]</div>
+      Olá, [nome]. Aqui está o relatório completo da nossa sessão de diagnóstico.
+      <div class="wa-time">hoje, 14:32</div>
+    </div>
+    <div class="wa-bubble">
+      <div class="wa-bubble-title">🗺️ O QUE IDENTIFIQUEI</div>
+      <ul>
+        <li>A rotina tem estrutura, mas falta previsibilidade visual</li>
+        <li>As transições são o maior gatilho de crise</li>
+        <li>O comportamento de recusa na hora do banho tem função de evitação sensorial</li>
+        <li>Você está carregando sozinha — e isso aparece nos dados</li>
+      </ul>
+      <div class="wa-time">hoje, 14:33</div>
+    </div>
+    <div class="wa-bubble">
+      <div class="wa-bubble-title">🎯 SUAS 3 PRIORIDADES</div>
+      <ul>
+        <li>1. Estrutura visual de transição (começa esta semana)</li>
+        <li>2. Script de antecipação para o banho</li>
+        <li>3. Redistribuição de carga com o cuidador</li>
+      </ul>
+      <div class="wa-time">hoje, 14:33</div>
+    </div>
+    <div class="wa-bubble">
+      <div class="wa-bubble-title">📋 PRIMEIROS PASSOS</div>
+      Esta semana: criar o painel de transição com 3 imagens. Eu te envio o modelo.
+      <div class="wa-time">hoje, 14:34</div>
+    </div>
+  </div>
+
+  <div class="relatorio-estrutura">
+    <div class="relatorio-bloco">
+      <div class="relatorio-bloco-num">Bloco 01</div>
+      <div class="relatorio-bloco-title">O Que Identifiquei</div>
+      <p class="relatorio-bloco-text">Padrões da rotina, gatilhos recorrentes, hipóteses de função dos comportamentos mais críticos. Escrito em linguagem humana, não clínica.</p>
+    </div>
+    <div class="relatorio-bloco">
+      <div class="relatorio-bloco-num">Bloco 02</div>
+      <div class="relatorio-bloco-title">Suas 3 Prioridades</div>
+      <p class="relatorio-bloco-text">As três frentes de intervenção ordenadas. Por que essa ordem? O que acontece se começar pela errada?</p>
+    </div>
+    <div class="relatorio-bloco">
+      <div class="relatorio-bloco-num">Bloco 03</div>
+      <div class="relatorio-bloco-title">Plano de Primeiros Passos</div>
+      <p class="relatorio-bloco-text">Ações práticas para esta semana. Sem precisar de equipamento, de terapeuta presente ou de reformular tudo de uma vez.</p>
+    </div>
+    <div class="relatorio-bloco">
+      <div class="relatorio-bloco-num">Bloco 04</div>
+      <div class="relatorio-bloco-title">O Que Vem Depois</div>
+      <p class="relatorio-bloco-text">Uma leitura honesta do que esse diagnóstico revela sobre o que ainda precisa ser construído — e o caminho que existe para isso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COPY DE OFERTA -->
+<section class="oferta" id="oferta">
+  <div class="section-eyebrow">A oferta</div>
+  <h2 class="section-title">Diagnóstico da Rotina</h2>
+  <p class="oferta-subtitle">Uma sessão que entrega clareza onde só havia caos.</p>
+
+  <div class="oferta-copy">
+    <div class="oferta-body">
+      <p>
+        Você já investiu em diagnóstico. Já paga por terapias. Já tentou rotinas, aplicativos, vídeos no YouTube às 23h. <strong>O problema não é informação. É que ninguém nunca se sentou com você para ler especificamente o que está acontecendo com o seu filho.</strong>
+      </p>
+      <p>
+        O Diagnóstico da Rotina é uma sessão de 90 minutos onde eu faço exatamente isso. Não é aula. Não é consultoria genérica. É uma análise do seu sistema familiar — rotina, comportamentos, dinâmica escolar, carga da mãe — com olho treinado em ABA e em desenvolvimento atípico.
+      </p>
+      <p>
+        Ao final, você não vai sair com uma lista de 20 coisas para fazer. <strong>Vai sair com 3 prioridades. E um plano de primeiros passos para começar esta semana.</strong>
+      </p>
+      <p>
+        O relatório chega no seu WhatsApp em até 48h, por escrito, para você consultar quando a crise acontecer — não precisar lembrar de cabeça o que discutimos.
+      </p>
+      <p style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; color: var(--gold-light); line-height: 1.5;">
+        "Cada semana sem plano é uma semana perdida que não se recupera. E você sente isso no corpo."
+      </p>
+      <p>
+        Esse produto existe para acabar com essa semana perdida. Uma sessão. Um diagnóstico. Clareza sobre onde começar.
+      </p>
+    </div>
+
+    <div class="oferta-box">
+      <div class="oferta-box-label">Investimento</div>
+      <div class="oferta-price">R$ 597</div>
+      <div class="oferta-price-sub">pagamento único · vagas limitadas</div>
+      <ul class="oferta-includes">
+        <li>Sessão ao vivo de 90 minutos (Google Meet ou Zoom)</li>
+        <li>Pré-formulário enviado antes da sessão</li>
+        <li>Relatório completo por WhatsApp em até 48h</li>
+        <li>3 prioridades de intervenção documentadas</li>
+        <li>Plano de primeiros passos personalizado</li>
+        <li>Leitura comportamental com base em ABA</li>
+      </ul>
+      <a href="#" class="oferta-cta">Quero meu diagnóstico</a>
+      <p class="oferta-urgency">Atendimento individual · agenda limitada</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEVANTADA DE MÃO -->
+<section class="levantada">
+  <div class="section-eyebrow">Copy para Instagram</div>
+  <h2 class="section-title">3 variações de story<br>para levantar a mão</h2>
+  <div class="levantada-cards">
+
+    <div class="levantada-card">
+      <div class="levantada-card-tag">Variação 1 — Diagnóstico direto</div>
+      <div class="levantada-card-gancho">Você paga por terapia. Comprou o diagnóstico. Mas ainda não sabe por onde começar em casa.</div>
+      <ul class="levantada-card-bullets">
+        <li>A rotina existe, mas vira caos nas transições</li>
+        <li>Você reage na crise, não antes dela</li>
+        <li>Tem dez comportamentos para trabalhar e não sabe qual é o primeiro</li>
+        <li>Cada semana sem plano é uma semana perdida</li>
+      </ul>
+      <p class="levantada-card-semente">Existe uma sessão onde eu leio especificamente o que está acontecendo com o seu filho — e entrego as 3 prioridades por escrito.</p>
+      <span class="levantada-card-cta">Comenta DIAGNÓSTICO aqui e eu te mando os detalhes.</span>
+    </div>
+
+    <div class="levantada-card">
+      <div class="levantada-card-tag">Variação 2 — Contraste</div>
+      <div class="levantada-card-gancho">Você faz tudo. E ainda assim sente que não está fazendo o suficiente.</div>
+      <ul class="levantada-card-bullets">
+        <li>Gerencia as terapias, a escola, o laudo, a agenda médica</li>
+        <li>Chega destruída em casa — e ainda precisa ser a mãe presente</li>
+        <li>Tenta aplicar o que aprende, mas sem saber se está na ordem certa</li>
+        <li>A culpa não some. A exaustão não passa.</li>
+      </ul>
+      <p class="levantada-card-semente">O problema não é dedicação. É que você nunca teve um mapa personalizado para o seu filho — não um genérico.</p>
+      <span class="levantada-card-cta">Me responde essa mensagem com MAPA e eu te conto como funciona.</span>
+    </div>
+
+    <div class="levantada-card">
+      <div class="levantada-card-tag">Variação 3 — Consequência</div>
+      <div class="levantada-card-gancho">As janelas de desenvolvimento não esperam você organizar a rotina.</div>
+      <ul class="levantada-card-bullets">
+        <li>Cada semana sem plano claro é uma semana que não volta</li>
+        <li>A crise de hoje poderia ter sido prevenida — mas você ainda não sabia como</li>
+        <li>Enquanto você tenta tudo ao mesmo tempo, nada avança de verdade</li>
+        <li>Você sente isso. No corpo. Todo dia.</li>
+      </ul>
+      <p class="levantada-card-semente">Tenho uma sessão de diagnóstico para mapear exatamente o que está travando a rotina do seu filho e entregar os primeiros passos.</p>
+      <span class="levantada-card-cta">Comenta ROTINA aqui que eu te mando os detalhes.</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOLLOW UP -->
+<div class="followup">
+  <div class="followup-title">Mensagem de follow-up — para quem levantou a mão</div>
+  <div class="followup-msg">Oi, [nome]! Que bom que você se identificou 🙏
+
+O Diagnóstico da Rotina é uma sessão de 90 minutos onde eu analiso especificamente o que está acontecendo na rotina do seu filho — os comportamentos mais desafiadores, os gatilhos de crise, e o que a rotina atual está ou não oferecendo para ele.
+
+Ao final, você recebe por escrito:
+• O diagnóstico do que identifiquei
+• Suas 3 prioridades de intervenção (na ordem certa)
+• Um plano de primeiros passos para começar esta semana
+
+Tudo no WhatsApp, para você consultar quando precisar.
+
+O investimento é R$ 597. As vagas são limitadas porque é atendimento individual.
+
+Você quer saber como agendar?</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">Juntando as Peças</span>
+  <span>Supervisão em desenvolvimento atípico · Jac</span>
+  <span>@juntandoaspecas</span>
+</footer>
+
+</body>
+</html>
